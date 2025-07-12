@@ -1,0 +1,218 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+      "title": "PECARN Medical Data Analysis API",
+      "description": "Lambda functions for PECARN pediatric emergency care data analysis",
+      "version": "1.0.0"
+  },
+  "paths": {
+      "/analyze_patient_data": {
+          "post": {
+              "summary": "Analyze Patient Data",
+              "description": "Analyze patient data from PECARN medical records",
+              "operationId": "analyze_patient_data",
+              "requestBody": {
+                  "required": true,
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "required": ["action_type"],
+                              "properties": {
+                                  "action_type": {
+                                      "type": "string",
+                                      "enum": ["analyze_patient_data"],
+                                      "description": "Type of action to perform"
+                                  },
+                                  "patient_id": {
+                                      "type": "string",
+                                      "description": "Patient identifier",
+                                      "example": "PECARN-12345"
+                                  },
+                                  "analysis_type": {
+                                      "type": "string",
+                                      "description": "Type of analysis to perform",
+                                      "example": "general"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful analysis",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                      "patient_id": {"type": "string"},
+                                      "analysis_type": {"type": "string"},
+                                      "status": {"type": "string"},
+                                      "message": {"type": "string"},
+                                      "timestamp": {"type": "string"}
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      },
+      "/calculate_statistics": {
+          "post": {
+              "summary": "Calculate Medical Statistics",
+              "description": "Calculate statistics from PECARN medical data",
+              "operationId": "calculate_statistics",
+              "requestBody": {
+                  "required": true,
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "required": ["action_type"],
+                              "properties": {
+                                  "action_type": {
+                                      "type": "string",
+                                      "enum": ["calculate_statistics"],
+                                      "description": "Type of action to perform"
+                                  },
+                                  "stat_type": {
+                                      "type": "string",
+                                      "description": "Type of statistics to calculate",
+                                      "example": "summary"
+                                  },
+                                  "date_range": {
+                                      "type": "string",
+                                      "description": "Date range for statistics",
+                                      "example": "last_30_days"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Statistics calculated successfully",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                      "statistic_type": {"type": "string"},
+                                      "date_range": {"type": "string"},
+                                      "status": {"type": "string"},
+                                      "message": {"type": "string"},
+                                      "timestamp": {"type": "string"}
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      },
+      "/extract_demographics": {
+          "post": {
+              "summary": "Extract Patient Demographics",
+              "description": "Extract patient demographics from PECARN records",
+              "operationId": "extract_demographics",
+              "requestBody": {
+                  "required": true,
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "required": ["action_type"],
+                              "properties": {
+                                  "action_type": {
+                                      "type": "string",
+                                      "enum": ["extract_demographics"],
+                                      "description": "Type of action to perform"
+                                  },
+                                  "record_id": {
+                                      "type": "string",
+                                      "description": "Medical record identifier",
+                                      "example": "REC-67890"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Demographics extracted successfully",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                      "record_id": {"type": "string"},
+                                      "demographics": {"type": "object"},
+                                      "timestamp": {"type": "string"}
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      },
+      "/calculate_bmi": {
+          "post": {
+              "summary": "Calculate Pediatric BMI",
+              "description": "Calculate BMI for pediatric patients",
+              "operationId": "calculate_bmi",
+              "requestBody": {
+                  "required": true,
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "required": ["action_type", "weight", "height"],
+                              "properties": {
+                                  "action_type": {
+                                      "type": "string",
+                                      "enum": ["calculate_bmi"],
+                                      "description": "Type of action to perform"
+                                  },
+                                  "weight": {
+                                      "type": "number",
+                                      "description": "Weight in kilograms",
+                                      "example": 25.5
+                                  },
+                                  "height": {
+                                      "type": "number",
+                                      "description": "Height in meters",
+                                      "example": 1.2
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "BMI calculated successfully",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                      "bmi": {"type": "number"},
+                                      "category": {"type": "string"},
+                                      "message": {"type": "string"},
+                                      "note": {"type": "string"}
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+  }
+}
