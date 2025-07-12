@@ -1,0 +1,334 @@
+/* Main app styles */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-secondary, #f8f9fa);
+}
+
+.app-layout .main-content {
+  flex: 1;
+  margin-left: 280px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  display: flex;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.app-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Sidebar styles - positioned within the main content area */
+.sidebar {
+  width: 320px;
+  background: white;
+  border-right: 1px solid #e9ecef;
+  overflow-y: auto;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+/* Chat content area - takes remaining space */
+.app-container .main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: transparent;
+  margin-left: 0; /* Remove margin since it's now inside the layout */
+}
+
+/* Enhanced Empty State */
+.empty-state {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #7f8c8d;
+  text-align: center;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  margin: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.7;
+  animation: float 3s ease-in-out infinite;
+}
+
+.empty-state h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.empty-state p {
+  margin: 0 0 2rem 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #7f8c8d;
+  max-width: 500px;
+}
+
+.create-conversation-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.create-conversation-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.button-icon {
+  font-size: 1.2rem;
+}
+
+/* Loading Screen */
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 1.2rem;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+  
+  .app-layout .main-content {
+    margin-left: 0;
+    flex-direction: column;
+  }
+  
+  .app-container {
+    flex-direction: column;
+    height: calc(100vh - 200px); /* Account for navigation height */
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: 200px;
+    border-right: none;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .app-container .main-content {
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    height: 150px;
+  }
+  
+  .app-container {
+    height: calc(100vh - 150px);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .sidebar {
+    background: linear-gradient(180deg, #34495e 0%, #2c3e50 100%);
+    border-right-color: #4a5f7a;
+  }
+  
+  .main-content {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  }
+  
+  .empty-state {
+    background: rgba(52, 73, 94, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .empty-state h3 {
+    color: #ecf0f1;
+  }
+  
+  .empty-state p {
+    color: #bdc3c7;
+  }
+}
+
+/* Mobile responsive styles for app-layout */
+@media (max-width: 768px) {
+  .app-layout .main-content {
+    margin-left: 0;
+  }
+  
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* Enhanced Empty State */
+.empty-state {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #7f8c8d;
+  text-align: center;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  margin: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  height: calc(100% - 4rem);
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.7;
+  animation: float 3s ease-in-out infinite;
+}
+
+.empty-state h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.empty-state p {
+  margin: 0 0 2rem 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #7f8c8d;
+  max-width: 500px;
+}
+
+.create-conversation-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.create-conversation-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.button-icon {
+  font-size: 1.2rem;
+}
+
+/* Loading Screen */
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 1.2rem;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

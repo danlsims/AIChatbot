@@ -1,0 +1,200 @@
+const AWS = require('aws-sdk');
+
+const s3 = new AWS.S3();
+
+const KB_BUCKET = process.env.KB_BUCKET;
+
+// Simple JWT validation (for demo purposes - in production, use proper JWT validation)
+function validateToken(authHeader) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return false;
+    }
+    
+    const token = authHeader.substring(7);
+    // Basic check - token should be a JWT (has 3 parts separated by dots)
+    const parts = token.split('.');
+    return parts.length === 3;
+}
+
+// Simple multipart parser for file uploads
+function parseMultipartData(body, contentType) {
+    const boundary = contentType.split('boundary=')[1];
+    if (!boundary) {
+        throw new Error('No boundary found in content-type');
+    }
+    
+    const parts = body.split(`--${boundary}`);
+    
+    for (const part of parts) {
+        if (part.includes('Content-Disposition: form-data') && part.includes('filename=')) {
+            // Extract filename
+            const filenameMatch = part.match(/filename="([^"]+)"/);
+            const filename = filenameMatch ? filenameMatch[1] : 'uploaded-file.pdf';
+            
+            // Extract content type
+            const contentTypeMatch = part.match(/Content-Type: ([^\r\n]+)/);
+            let fileContentType = contentTypeMatch ? contentTypeMatch[1] : 'application/octet-stream';
+            
+            // Set appropriate content type based on file extension if not provided
+            if (!contentTypeMatch && filename) {
+                const ext = filename.toLowerCase().split('.').pop();
+                const contentTypeMap = {
+                    'pdf': 'application/pdf',
+                    'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'doc': 'application/msword',
+                    'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                    'ppt': 'application/vnd.ms-powerpoint',
+                    'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'xls': 'application/vnd.ms-excel',
+                    'txt': 'text/plain',
+                    'md': 'text/markdown',
+                    'csv': 'text/csv',
+                    'html': 'text/html',
+                    'htm': 'text/html'
+                };
+                fileContentType = contentTypeMap[ext] || 'application/octet-stream';
+            }
+            
+            // Extract file content (everything after the double CRLF)
+            const contentStart = part.indexOf('\r\n\r\n');
+            if (contentStart === -1) continue;
+            
+            const content = part.substring(contentStart + 4);
+            // Remove trailing boundary markers
+            const cleanContent = content.replace(/\r\n--.*$/, '');
+            
+            if (cleanContent.length > 0) {
+                return {
+                    filename,
+                    contentType: fileContentType,
+                    content: Buffer.from(cleanContent, 'binary')
+                };
+            }
+        }
+    }
+    
+    return null;
+}
+
+exports.handler = async (event) => {
+    console.log('Event method:', event.httpMethod);
+    console.log('Environment variables:', {
+        KB_BUCKET
+    });
+    
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token',
+        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+    };
+
+    // Handle preflight requests
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 200,
+            headers,
+            body: ''
+        };
+    }
+
+    try {
+        // Validate authorization
+        const authHeader = event.headers.Authorization || event.headers.authorization;
+        if (!validateToken(authHeader)) {
+            return {
+                statusCode: 401,
+                headers,
+                body: JSON.stringify({ error: 'Unauthorized - Invalid or missing token' })
+            };
+        }
+
+        // Get content type
+        const contentType = event.headers['content-type'] || event.headers['Content-Type'];
+        if (!contentType || !contentType.includes('multipart/form-data')) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: 'Content-Type must be multipart/form-data' })
+            };
+        }
+
+        // Parse multipart data
+        console.log('Parsing multipart data with custom parser...');
+        const file = parseMultipartData(event.body, contentType);
+        
+        if (!file) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ 
+                    error: 'No file found in request',
+                    debug: 'Make sure the form field name is "file" and a file is selected'
+                })
+            };
+        }
+
+        console.log('File parsed successfully:', {
+            filename: file.filename,
+            contentType: file.contentType,
+            size: file.content.length
+        });
+
+        // Validate file type - support all Bedrock Knowledge Base compatible formats
+        const supportedExtensions = [
+            '.pdf', '.docx', '.doc', '.pptx', '.ppt', '.xlsx', '.xls', 
+            '.txt', '.md', '.csv', '.html', '.htm'
+        ];
+        
+        const fileName = file.filename.toLowerCase();
+        const isSupported = supportedExtensions.some(ext => fileName.endsWith(ext));
+        
+        if (!isSupported) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ 
+                    error: 'Unsupported file type. Supported formats: PDF, Word, PowerPoint, Excel, Text, Markdown, CSV, HTML' 
+                })
+            };
+        }
+
+        // Upload file to S3 knowledge base bucket
+        const uploadParams = {
+            Bucket: KB_BUCKET,
+            Key: file.filename,
+            Body: file.content,
+            ContentType: file.contentType,
+            Metadata: {
+                'uploaded-by': 'web-interface',
+                'upload-timestamp': new Date().toISOString()
+            }
+        };
+
+        console.log('Uploading file to S3:', file.filename);
+        const uploadResult = await s3.upload(uploadParams).promise();
+        console.log('File uploaded successfully:', uploadResult.Location);
+
+        // Return success immediately - S3 event will trigger knowledge base sync
+        return {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify({
+                message: 'File uploaded successfully! Knowledge base sync will start automatically.',
+                fileName: file.filename,
+                s3Location: uploadResult.Location,
+                note: 'The knowledge base will be synced in the background. This may take a few minutes.'
+            })
+        };
+
+    } catch (error) {
+        console.error('Error:', error);
+        return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ 
+                error: 'Failed to upload file',
+                details: error.message 
+            })
+        };
+    }
+};

@@ -1,0 +1,10 @@
+{
+  "name": "file-upload-handler",
+  "version": "1.0.0",
+  "description": "Lambda function to handle file uploads to knowledge base",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1691.0",
+    "lambda-multipart-parser": "^1.0.1"
+  }
+}

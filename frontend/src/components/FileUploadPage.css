@@ -1,0 +1,325 @@
+/* File Upload Page Styles */
+.file-upload-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.page-header {
+  max-width: 1200px;
+  width: 100%;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-header p {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin: 0;
+  line-height: 1.6;
+  max-width: 800px;
+}
+
+.upload-section {
+  max-width: 1200px;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.info-section {
+  max-width: 1200px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(233, 236, 239, 0.5);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+.info-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-card p {
+  font-size: 1rem;
+  color: #6c757d;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.info-card ul {
+  margin: 1rem 0 0 0;
+  padding-left: 1.5rem;
+  color: #6c757d;
+}
+
+.info-card li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+/* Upload Stats */
+.upload-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(233, 236, 239, 0.5);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: #667eea;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  color: #667eea;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 0.25rem 0;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Supported Formats Section */
+.supported-formats {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(233, 236, 239, 0.5);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.formats-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.formats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.format-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(248, 249, 250, 0.8);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(233, 236, 239, 0.5);
+}
+
+.format-item:hover {
+  background: rgba(102, 126, 234, 0.1);
+  border-color: #667eea;
+  transform: translateY(-2px);
+}
+
+.format-icon {
+  font-size: 1.25rem;
+  width: 24px;
+  text-align: center;
+}
+
+.format-icon.pdf { color: #dc2626; }
+.format-icon.doc { color: #2563eb; }
+.format-icon.xls { color: #059669; }
+.format-icon.ppt { color: #ea580c; }
+.format-icon.txt { color: #6c757d; }
+.format-icon.csv { color: #059669; }
+.format-icon.html { color: #ea580c; }
+.format-icon.md { color: #6c757d; }
+
+.format-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.format-ext {
+  font-size: 0.75rem;
+  color: #adb5bd;
+  margin-left: auto;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+/* Upload Guidelines */
+.upload-guidelines {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.guidelines-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #667eea;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.guidelines-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.guidelines-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+.guidelines-list li:last-child {
+  margin-bottom: 0;
+}
+
+.guideline-icon {
+  color: #28a745;
+  font-size: 1rem;
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .file-upload-page {
+    padding: 1rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .page-header p {
+    font-size: 1rem;
+  }
+  
+  .upload-stats {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .stat-card {
+    padding: 1rem;
+  }
+  
+  .info-section {
+    grid-template-columns: 1fr;
+  }
+  
+  .formats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .upload-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .formats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .info-card,
+  .supported-formats,
+  .upload-guidelines {
+    padding: 1.5rem;
+  }
+}
+
+/* Animation for page load */
+.file-upload-page {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

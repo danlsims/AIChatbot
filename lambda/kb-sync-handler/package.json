@@ -1,0 +1,17 @@
+{
+  "name": "kb-sync-handler",
+  "version": "1.0.0",
+  "description": "Lambda function to sync knowledge base when files are uploaded to S3",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1692.0"
+  },
+  "keywords": [
+    "bedrock",
+    "knowledge-base",
+    "s3",
+    "sync"
+  ],
+  "author": "AI Team",
+  "license": "MIT"
+}
